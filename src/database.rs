@@ -9,7 +9,8 @@ pub fn establish_connection() -> SqliteConnection {
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
-pub type DB = Arc<Pool>;
+pub type DbPool = Arc<Pool>;
+pub type RouterType = axum::Router<std::sync::Arc<deadpool_diesel::Pool<deadpool_diesel::Manager<diesel::prelude::SqliteConnection>>>>;
 
 pub fn get_pool() -> Pool {
     let db_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
