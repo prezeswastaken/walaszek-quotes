@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+anyhow = "1.0.89"
+deadpool-diesel = { version = "0.6.1", features = ["serde", "sqlite"] }
 diesel = { version = "2.2.4", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
 dotenvy = "0.15.7"
 log = "0.4.22"

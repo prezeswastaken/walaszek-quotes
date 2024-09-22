@@ -6,14 +6,15 @@ use serde_json::json;
 use tokio::sync::Mutex;
 
 use crate::{
-    database::DB, filters::db_filter::db_filter, models::show::NewShow, repositories::show_repository::{create_show, get_all_shows, get_show_by_id}
+    database::DB,
+    filters::db_filter::db_filter,
+    models::show::NewShow,
+    repositories::show_repository::{create_show, get_all_shows, get_show_by_id},
 };
 
 use super::auth_filter::auth_filter;
 
-pub fn shows_filter(
-    db: DB,
-) -> impl Filter<Extract = impl Reply, Error = warp::Rejection> + Clone {
+pub fn shows_filter(db: DB) -> impl Filter<Extract = impl Reply, Error = warp::Rejection> + Clone {
     let base = warp::path("shows");
 
     let index = base
@@ -43,10 +44,7 @@ async fn index(db: DB) -> Result<impl Reply, warp::Rejection> {
     Ok(warp::reply::json(&json!(shows)))
 }
 
-async fn create(
-    db: DB,
-    show: NewShow,
-) -> Result<impl Reply, warp::Rejection> {
+async fn create(db: DB, show: NewShow) -> Result<impl Reply, warp::Rejection> {
     let show = create_show(db, show).await.map_err(|_| warp::reject())?;
     Ok(warp::reply::with_status(
         warp::reply::json(&show),
@@ -54,10 +52,7 @@ async fn create(
     ))
 }
 
-async fn show_by_id(
-    db: DB,
-    id: i32,
-) -> Result<impl Reply, warp::Rejection> {
+async fn show_by_id(db: DB, id: i32) -> Result<impl Reply, warp::Rejection> {
     let show = get_show_by_id(db, id).await.map_err(|_| warp::reject())?;
     Ok(warp::reply::json(&json!(show)))
 }

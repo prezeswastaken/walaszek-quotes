@@ -3,7 +3,10 @@ use std::sync::Arc;
 use dotenvy::dotenv;
 use serde_json::json;
 use tokio::sync::Mutex;
-use walaszek_qutoes::{database::establish_connection, filters::shows_filter::shows_filter};
+use walaszek_qutoes::{
+    database::{establish_connection, get_pool},
+    filters::shows_filter::shows_filter,
+};
 use warp::{reply::Reply, Filter};
 
 #[tokio::main]
@@ -14,8 +17,8 @@ async fn main() {
         panic!("Failed to load .env file: {}", e);
     }
 
-    let db = establish_connection();
-    let db = Arc::new(Mutex::new(db));
+    let db = get_pool();
+    let db = Arc::new(db);
 
     let port = std::env::var("PORT")
         .unwrap_or("8000".to_string())
