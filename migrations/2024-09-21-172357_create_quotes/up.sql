@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS quotes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    text TEXT NOT NULL,
+    character_id INTEGER NOT NULL,
+    FOREIGN KEY (character_id) REFERENCES characters (id)
+);
