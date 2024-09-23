@@ -31,13 +31,14 @@ async fn index(
 
     let resources = quotes.clone()
         .into_iter()
-        .map(|(quote, character)| QuoteResource::new(quote, character))
+        .map(|(quote, character)| QuoteResource::make(quote, character))
         .collect::<Vec<QuoteResource>>();
 
     let response = json!({
         "count": resources.len(),
         "data": resources,
     });
+
     Ok(Json(response))
 }
 
@@ -48,7 +49,7 @@ async fn show(
     let quote = get_quote_by_id(pool.clone(), id).await?;
     let character = repositories::character_repository::get_character_by_id(pool, quote.character_id).await?;
 
-    let resource = QuoteResource::new(quote, character);
+    let resource = QuoteResource::make(quote, character);
 
     Ok(Json(resource))
 }
@@ -60,7 +61,7 @@ async fn create(
     let quote = create_quote(pool.clone(), quote).await?;
     let character = repositories::character_repository::get_character_by_id(pool, quote.character_id).await?;
 
-    let resource = QuoteResource::new(quote, character);
+    let resource = QuoteResource::make(quote, character);
 
     Ok(Json(resource))
 }

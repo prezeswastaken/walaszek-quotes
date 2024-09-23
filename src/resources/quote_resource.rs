@@ -13,7 +13,7 @@ pub struct QuoteResource {
 }
 
 impl QuoteResource {
-    pub fn new(quote: Quote, character: Character) -> Self {
+    pub fn make(quote: Quote, character: Character) -> Self {
         Self {
             id: quote.id,
             text: quote.text,
